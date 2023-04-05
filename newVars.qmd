@@ -2,3 +2,28 @@
 title: "New Variables"
 format: html
 ---
+
+```{r}
+spotify_songs <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-01-21/spotify_songs.csv', show_col_types = FALSE)
+
+
+spotify_songs$classicalness = (spotify_songs$acousticness + (1-spotify_songs$speechiness) + spotify_songs$instrumentalness)/3
+
+spotify_songs$title.words = sapply(strsplit(spotify_songs$track_name, " "), length)
+
+spotify_songs$norm.loudness = (spotify_songs$loudness - min(spotify_songs$loudness)) / (max(spotify_songs$loudness) - min(spotify_songs$loudness))
+
+spotify_songs$norm.tempo = (spotify_songs$tempo - min(spotify_songs$tempo)) / (max(spotify_songs$tempo) - min(spotify_songs$tempo))
+
+spotify_songs$intensity = (spotify_songs$energy + (1-spotify_songs$norm.loudness) + spotify_songs$norm.tempo)/3
+```
+
+|variable|class|range|description|
+|:-|:-|:-|:-|
+|classicalness|double|0-1|an average of acousticness, instrumentalness, and 1-speechiness approximating the amount the song could be described as classical, higher scores imply more classical|
+|title.words|double|1-26|the number of words in the song title|
+|norm.loudness|double|0-1|a min-max normalized spotify\_songs\$loudness|
+|norm.tempo|double|0-1|a min-max normalized spotify\_songs\$tempo|
+|intensity|double|0-1|the average of energy, normalized tempo, and 1- normalized loudness, where higher scores imply higher intensity|
+
+: New Spotify data variables {#tbl-newvars}
