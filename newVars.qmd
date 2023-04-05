@@ -16,6 +16,11 @@ spotify_songs$norm.loudness = (spotify_songs$loudness - min(spotify_songs$loudne
 spotify_songs$norm.tempo = (spotify_songs$tempo - min(spotify_songs$tempo)) / (max(spotify_songs$tempo) - min(spotify_songs$tempo))
 
 spotify_songs$intensity = (spotify_songs$energy + (1-spotify_songs$norm.loudness) + spotify_songs$norm.tempo)/3
+
+
+
+
+write.csv(spotify_songs, "modified_spotify.csv", row.names = FALSE)
 ```
 
 |variable|class|range|description|
