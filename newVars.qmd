@@ -3,7 +3,7 @@ title: "New Variables"
 format: html
 ---
 
-```{r}
+```{r, include=FALSE}
 spotify_songs <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-01-21/spotify_songs.csv', show_col_types = FALSE)
 
 
@@ -17,18 +17,28 @@ spotify_songs$norm.tempo = (spotify_songs$tempo - min(spotify_songs$tempo)) / (m
 
 spotify_songs$intensity = (spotify_songs$energy + (1-spotify_songs$norm.loudness) + spotify_songs$norm.tempo)/3
 
+spotify_songs$livetrack = ifelse(spotify_songs$liveness >= 0.80, 1, 0)
 
+spotify_songs$duration_mins = spotify_songs$duration_ms/60000
+
+spotify_songs$speechiness_cat = ifelse(spotify_songs$speechiness <= 0.33, 0,                  ifelse(spotify_songs$speechiness >0.33 &                    spotify_songs$speechiness<0.66, 1, 
+      ifelse(spotify_songs$speechiness >=0.66, 2, NA)))
 
 
 write.csv(spotify_songs, "modified_spotify.csv", row.names = FALSE)
 ```
 
-|variable|class|range|description|
-|:-|:-|:-|:-|
-|classicalness|double|0-1|an average of acousticness, instrumentalness, and 1-speechiness approximating the amount the song could be described as classical, higher scores imply more classical|
-|title.words|double|1-26|the number of words in the song title|
-|norm.loudness|double|0-1|a min-max normalized spotify\_songs\$loudness|
-|norm.tempo|double|0-1|a min-max normalized spotify\_songs\$tempo|
-|intensity|double|0-1|the average of energy, normalized tempo, and 1- normalized loudness, where higher scores imply higher intensity|
+| variable        | class  | range            | description                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|:-----------------|:-----------------|:-----------------|:-----------------|
+| classicalness   | double | 0-1              | an average of acousticness, instrumentalness, and 1-speechiness approximating the amount the song could be described as classical, higher scores imply more classical                                                                                                                                                                                                                                                         |
+| title.words     | double | 1-26             | the number of words in the song title                                                                                                                                                                                                                                                                                                                                                                                         |
+| norm.loudness   | double | 0-1              | a min-max normalized spotify_songs\$loudness                                                                                                                                                                                                                                                                                                                                                                                  |
+| norm.tempo      | double | 0-1              | a min-max normalized spotify_songs\$tempo                                                                                                                                                                                                                                                                                                                                                                                     |
+| intensity       | double | 0-1              | the average of energy, normalized tempo, and 1- normalized loudness, where higher scores imply higher intensity                                                                                                                                                                                                                                                                                                               |
+| livetrack       | double | 0-1              | Livetrack is a categorization of tracks as performed live in front of an audience (livetrack=1) or not performed live (livetrack=0). Livetrack is created from the liveness variable, in which songs with a value of liveness [\>]{.underline} 0.80 are likely to have been performed in front of an audience, whereas songs with a value of liveness \< 0.80 are less likely to have been performed in front of an audience. |
+| duration_mins   | double | 0.07-8.6 minutes | The duration of song in minutes, converted from milliseconds (duration_ms)                                                                                                                                                                                                                                                                                                                                                    |
+| speechiness_cat | double | 0-2              | Speechiness_cat is a categorization of tracks as non-speech-like (0), tracks with music and speech (1), and spoken word tracks (2). Speechiness_cat is created from speechiness, in which tracks with a value [\<]{.underline} 0.33 are likely non-speech tracks, tracks with a value \>0.33 or \<0.66 are likely music and speech, and [\>]{.underline}0.66 are likely spoken word tracks.                                   |
 
 : New Spotify data variables {#tbl-newvars}
+
+@tbl-newvars describes 8 new variables, classicalness, title.words, norm.loudness, norm.tempo, itensity, livetrack, duration_mins, speechiness_cat, created from the Spotify dataset. The table provides the class, range, and description of each new variable.
