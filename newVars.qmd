@@ -19,7 +19,7 @@ spotify_songs$intensity = (spotify_songs$energy + (1-spotify_songs$norm.loudness
 
 spotify_songs$livetrack = ifelse(spotify_songs$liveness >= 0.80, 1, 0)
 
-spotify_songs$duraion_mins = spotify_songs$duration_ms/60000
+spotify_songs$duration_mins = spotify_songs$duration_ms/60000
 
 spotify_songs$speechiness_cat = ifelse(spotify_songs$speechiness <= 0.33, 0,                  ifelse(spotify_songs$speechiness >0.33 &                    spotify_songs$speechiness<0.66, 1, 
       ifelse(spotify_songs$speechiness >=0.66, 2, NA)))
