@@ -24,21 +24,51 @@ spotify_songs$duration_mins = spotify_songs$duration_ms/60000
 spotify_songs$speechiness_cat = ifelse(spotify_songs$speechiness <= 0.33, 0,                  ifelse(spotify_songs$speechiness >0.33 &                    spotify_songs$speechiness<0.66, 1, 
       ifelse(spotify_songs$speechiness >=0.66, 2, NA)))
 
+#Zoe vars
+#adding variable for letter key using pitch class notation
+spotify_songs <- mutate(spotify_songs, key_letter = case_when 
+                        (key == 0 ~ 'C',
+                             key == 1 ~ 'C♯/D♭',
+                             key == 2 ~ 'D',
+                             key == 3 ~ 'D#/E♭',
+                             key == 4 ~ 'E',
+                             key == 5 ~ 'F',
+                             key == 6 ~ 'F♯/G♭',
+                             key == 7 ~ 'G',
+                             key == 8 ~ 'G♯/A♭',
+                             key == 9 ~ 'A',
+                             key == 10 ~ 'A♯/B♭',
+                             key == 11 ~ 'B',
+                             key == -1 ~ 'missing'))
+
+
+#adding variable for categorizing song popularity
+spotify_songs <- mutate(spotify_songs, popularity = case_when 
+                   (track_popularity > 33 ~ 'high',
+                  track_popularity > 66 ~ 'medium',
+                  TRUE ~ 'low'))
+
+
+#adding variable to calculate minutes of length from milliseconds
+spotify_songs <- mutate(spotify_songs, minutes = duration_ms/60000)
 
 write.csv(spotify_songs, "modified_spotify.csv", row.names = FALSE)
 ```
 
-| variable        | class  | range            | description                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| variable        | class     | range             | description                                                                                                                                                                                                                                                                                                                                                                                                                   |
 |:-----------------|:-----------------|:-----------------|:-----------------|
-| classicalness   | double | 0-1              | an average of acousticness, instrumentalness, and 1-speechiness approximating the amount the song could be described as classical, higher scores imply more classical                                                                                                                                                                                                                                                         |
-| title.words     | double | 1-26             | the number of words in the song title                                                                                                                                                                                                                                                                                                                                                                                         |
-| norm.loudness   | double | 0-1              | a min-max normalized spotify_songs\$loudness                                                                                                                                                                                                                                                                                                                                                                                  |
-| norm.tempo      | double | 0-1              | a min-max normalized spotify_songs\$tempo                                                                                                                                                                                                                                                                                                                                                                                     |
-| intensity       | double | 0-1              | the average of energy, normalized tempo, and 1- normalized loudness, where higher scores imply higher intensity                                                                                                                                                                                                                                                                                                               |
-| livetrack       | double | 0-1              | Livetrack is a categorization of tracks as performed live in front of an audience (livetrack=1) or not performed live (livetrack=0). Livetrack is created from the liveness variable, in which songs with a value of liveness [\>]{.underline} 0.80 are likely to have been performed in front of an audience, whereas songs with a value of liveness \< 0.80 are less likely to have been performed in front of an audience. |
-| duration_mins   | double | 0.07-8.6 minutes | The duration of song in minutes, converted from milliseconds (duration_ms)                                                                                                                                                                                                                                                                                                                                                    |
-| speechiness_cat | double | 0-2              | Speechiness_cat is a categorization of tracks as non-speech-like (0), tracks with music and speech (1), and spoken word tracks (2). Speechiness_cat is created from speechiness, in which tracks with a value [\<]{.underline} 0.33 are likely non-speech tracks, tracks with a value \>0.33 or \<0.66 are likely music and speech, and [\>]{.underline}0.66 are likely spoken word tracks.                                   |
+| classicalness   | double    | 0-1               | an average of acousticness, instrumentalness, and 1-speechiness approximating the amount the song could be described as classical, higher scores imply more classical                                                                                                                                                                                                                                                         |
+| title.words     | double    | 1-26              | the number of words in the song title                                                                                                                                                                                                                                                                                                                                                                                         |
+| norm.loudness   | double    | 0-1               | a min-max normalized spotify_songs\$loudness                                                                                                                                                                                                                                                                                                                                                                                  |
+| norm.tempo      | double    | 0-1               | a min-max normalized spotify_songs\$tempo                                                                                                                                                                                                                                                                                                                                                                                     |
+| intensity       | double    | 0-1               | the average of energy, normalized tempo, and 1- normalized loudness, where higher scores imply higher intensity                                                                                                                                                                                                                                                                                                               |
+| livetrack       | double    | 0-1               | Livetrack is a categorization of tracks as performed live in front of an audience (livetrack=1) or not performed live (livetrack=0). Livetrack is created from the liveness variable, in which songs with a value of liveness [\>]{.underline} 0.80 are likely to have been performed in front of an audience, whereas songs with a value of liveness \< 0.80 are less likely to have been performed in front of an audience. |
+| duration_mins   | double    | 0.07-8.6 minutes  | The duration of song in minutes, converted from milliseconds (duration_ms)                                                                                                                                                                                                                                                                                                                                                    |
+| speechiness_cat | double    | 0-2               | Speechiness_cat is a categorization of tracks as non-speech-like (0), tracks with music and speech (1), and spoken word tracks (2). Speechiness_cat is created from speechiness, in which tracks with a value [\<]{.underline} 0.33 are likely non-speech tracks, tracks with a value \>0.33 or \<0.66 are likely music and speech, and [\>]{.underline}0.66 are likely spoken word tracks.                                   |
+| popularity      | character | high, medium, low | Song popularity characterized into three tertiles. Low represents 0-33, medium represents 34-66, and high represents 64-100 ranges from the numeric track_popularity variable.                                                                                                                                                                                                                                                |
+| key_letter      | character | C-A               | Pitch class notation was used to convert the numerical "key" indicator into the letter representing the key.                                                                                                                                                                                                                                                                                                                  |
+| minutes         | double    | 0.07-8.6 minutes  | The duration of song in minutes, converted from milliseconds (duration_ms)                                                                                                                                                                                                                                                                                                                                                    |
 
 : New Spotify data variables {#tbl-newvars}
 
-@tbl-newvars describes 8 new variables, classicalness, title.words, norm.loudness, norm.tempo, itensity, livetrack, duration_mins, speechiness_cat, created from the Spotify dataset. The table provides the class, range, and description of each new variable.
+@tbl-newvars describes 11 new variables, classicalness, title.words, norm.loudness, norm.tempo, itensity, livetrack, duration_mins, speechiness_cat, popularity, key_letter, minutes created from the Spotify dataset. The table provides the class, range, and description of each new variable.
