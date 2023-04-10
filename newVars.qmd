@@ -6,10 +6,7 @@ format: html
 ```{r, include=FALSE}
 library(knitr)
 library(dplyr)
-<<<<<<< HEAD
 
-=======
->>>>>>> ae977f2 (merge to zoe)
 spotify_songs <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-01-21/spotify_songs.csv', show_col_types = FALSE)
 spotify_songs$classicalness = (spotify_songs$acousticness + (1-spotify_songs$speechiness) + spotify_songs$instrumentalness)/3
 spotify_songs$title.words = sapply(strsplit(spotify_songs$track_name, " "), length)
