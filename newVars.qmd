@@ -6,6 +6,7 @@ format: html
 ```{r, include=FALSE}
 library(knitr)
 library(dplyr)
+
 spotify_songs <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-01-21/spotify_songs.csv', show_col_types = FALSE)
 
 
@@ -28,7 +29,7 @@ spotify_songs$speechiness_cat = ifelse(spotify_songs$speechiness <= 0.33, 0,    
 
 #Zoe vars
 #adding variable for letter key using pitch class notation
-spotify_songs <- mutate(spotify_songs, key_letter = case_when 
+spotify_songs <- dplyr::mutate(spotify_songs, key_letter = case_when 
                         (key == 0 ~ 'C',
                              key == 1 ~ 'C♯/D♭',
                              key == 2 ~ 'D',
