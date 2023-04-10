@@ -4,6 +4,8 @@ format: html
 ---
 
 ```{r, include=FALSE}
+library(knitr)
+library(dplyr)
 spotify_songs <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-01-21/spotify_songs.csv', show_col_types = FALSE)
 
 
