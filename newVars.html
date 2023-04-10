@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.2.269">
+<meta name="generator" content="quarto-1.2.335">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -126,10 +126,28 @@ ul.task-list li input[type="checkbox"] {
 <td style="text-align: left;">0-2</td>
 <td style="text-align: left;">Speechiness_cat is a categorization of tracks as non-speech-like (0), tracks with music and speech (1), and spoken word tracks (2). Speechiness_cat is created from speechiness, in which tracks with a value <u>&lt;</u> 0.33 are likely non-speech tracks, tracks with a value &gt;0.33 or &lt;0.66 are likely music and speech, and <u>&gt;</u>0.66 are likely spoken word tracks.</td>
 </tr>
+<tr class="odd">
+<td style="text-align: left;">popularity</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: left;">high, medium, low</td>
+<td style="text-align: left;">Song popularity characterized into three tertiles. Low represents 0-33, medium represents 34-66, and high represents 64-100 ranges from the numeric track_popularity variable.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">key_letter</td>
+<td style="text-align: left;">character</td>
+<td style="text-align: left;">C-A</td>
+<td style="text-align: left;">Pitch class notation was used to convert the numerical “key” indicator into the letter representing the key.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">minutes</td>
+<td style="text-align: left;">double</td>
+<td style="text-align: left;">0.07-8.6 minutes</td>
+<td style="text-align: left;">The duration of song in minutes, converted from milliseconds (duration_ms)</td>
+</tr>
 </tbody>
 </table>
 </div>
-<p><a href="#tbl-newvars">Table&nbsp;1</a> describes 8 new variables, classicalness, title.words, norm.loudness, norm.tempo, itensity, livetrack, duration_mins, speechiness_cat, created from the Spotify dataset. The table provides the class, range, and description of each new variable.</p>
+<p><a href="#tbl-newvars">Table&nbsp;1</a> describes 11 new variables, classicalness, title.words, norm.loudness, norm.tempo, itensity, livetrack, duration_mins, speechiness_cat, popularity, key_letter, minutes created from the Spotify dataset. The table provides the class, range, and description of each new variable.</p>
 
 </main>
 <!-- /main column -->
