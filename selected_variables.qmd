@@ -1,0 +1,39 @@
+---
+title: "Selected Variables"
+format: pdf
+---
+
+```{r, include=FALSE}
+library(knitr)
+library(dplyr)
+
+spotify_songs <- readr::read_csv("raw_spotify.csv", show_col_types = FALSE)
+
+spotify_songs$norm.loudness = (spotify_songs$loudness - min(spotify_songs$loudness)) / (max(spotify_songs$loudness) - min(spotify_songs$loudness))
+
+spotify_songs$norm.tempo = (spotify_songs$tempo - min(spotify_songs$tempo)) / (max(spotify_songs$tempo) - min(spotify_songs$tempo))
+
+spotify_songs$intensity = (spotify_songs$energy + (1-spotify_songs$norm.loudness) + spotify_songs$norm.tempo)/3
+
+spotify_songs$duration_mins = spotify_songs$duration_ms/60000
+
+spotify_songs <- mutate(spotify_songs, popularity = case_when 
+                   (track_popularity > 33 ~ 'high',
+                  track_popularity > 66 ~ 'medium',
+                  TRUE ~ 'low'))
+
+write.csv(spotify_songs, "scored_spotify.csv", row.names = FALSE)
+```
+
+| variable        | class     | range             | description                            |
+|:-----------------|:-----------------|:-----------------|:-----------------|
+                                                                      |
+| norm.loudness   | double    | 0-1               | a min-max normalized spotify_songs\$loudness                                                                      |
+| norm.tempo      | double    | 0-1               | a min-max normalized spotify_songs\$tempo                                                                         |
+| intensity       | double    | 0-1               | the average of energy, normalized tempo, and 1- normalized loudness, where higher scores imply higher intensity                                                                              |
+| duration_mins   | double    | 0.07-8.6 minutes  | The duration of song in minutes, converted from milliseconds (duration_ms)                                        |
+| popularity      | character | high, medium, low | Song popularity characterized into three tertiles. Low represents 0-33, medium represents 34-66, and high represents 64-100 ranges from the numeric track_popularity variable.                                                                                          |
+
+: New Spotify data variables {#tbl-newvars}
+
+@tbl-newvars describes 5 new variables, norm.loudness, norm.tempo, itensity, duration_mins, popularity created from the Spotify dataset. The table provides the class, range, and description of each new variable.
