@@ -7,7 +7,7 @@ format: pdf
 library(knitr)
 library(dplyr)
 
-spotify_songs <- readr::read_csv("raw_spotify.csv", show_col_types = FALSE)
+spotify_songs <- readr::read_csv("cleaned_spotify.csv", show_col_types = FALSE)
 
 spotify_songs$norm.loudness = (spotify_songs$loudness - min(spotify_songs$loudness)) / (max(spotify_songs$loudness) - min(spotify_songs$loudness))
 
