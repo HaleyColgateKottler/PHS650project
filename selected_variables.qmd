@@ -17,10 +17,8 @@ spotify_songs$intensity = (spotify_songs$energy + (1-spotify_songs$norm.loudness
 
 spotify_songs$minutes = spotify_songs$duration_ms/60000
 
-spotify_songs <- mutate(spotify_songs, popularity = case_when 
-                   (track_popularity > 33 ~ 'high',
-                  track_popularity > 66 ~ 'medium',
-                  TRUE ~ 'low'))
+spotify_songs$popularity = ifelse(spotify_songs$track_popularity <= 33, 1,
+      ifelse(spotify_songs$track_popularity <66 & spotify_songs$track_popularity>33, 2, ifelse(spotify_songs$track_popularity >= 66, 3, NA)))
 
 write.csv(spotify_songs, "scored_spotify.csv", row.names = FALSE)
 ```
@@ -32,7 +30,7 @@ write.csv(spotify_songs, "scored_spotify.csv", row.names = FALSE)
 | norm.tempo      | double    | 0-1               | a min-max normalized spotify_songs\$tempo                                                                         |
 | intensity       | double    | 0-1               | the average of energy, normalized tempo, and 1- normalized loudness, where higher scores imply higher intensity                                                                              |
 | minutes   | double    | 0.07-8.6 minutes  | The duration of song in minutes, converted from milliseconds (duration_ms)                                        |
-| popularity      | character | high, medium, low | Song popularity characterized into three tertiles. Low represents 0-33, medium represents 34-66, and high represents 64-100 ranges from the numeric track_popularity variable.                                                                                          |
+| popularity      | character | high, medium, low | Song popularity characterized into three tertiles. 1 represents low 0-33, 2 represents medium 34-66, and 2 represents high 64-100 ranges from the numeric track_popularity variable.                                                                                          |
 
 : New Spotify data variables {#tbl-newvars}
 
