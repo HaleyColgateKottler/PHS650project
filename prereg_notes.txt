@@ -1,0 +1,7 @@
+Measured vars
+Loudness: average loudness of track in decibels between -60 and 0 db
+Tempo: estimated beats per minute
+Energy: continuous on 0-1, based on entropy, dynamic range, timbre, onset rate, perceived loudness
+duration_ms: duration of the track in milliseconds
+track_popularity: 0-100 where higher is better 
+
