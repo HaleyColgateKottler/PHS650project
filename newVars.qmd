@@ -34,17 +34,16 @@ spotify_songs <- mutate(spotify_songs, key_letter = case_when
                              key == 11 ~ 'B',
                              key == -1 ~ 'missing'))
 #adding variable for categorizing song popularity
-spotify_songs <- mutate(spotify_songs, popularity = case_when 
-                   (track_popularity > 33 ~ 'high',
-                  track_popularity > 66 ~ 'medium',
-                  TRUE ~ 'low'))
+spotify_songs$popularity = ifelse(spotify_songs$track_popularity <= 33, 1,
+      ifelse(spotify_songs$track_popularity <66 & spotify_songs$track_popularity>33, 2, ifelse(spotify_songs$track_popularity >= 66, 3, NA)))
+
 #adding variable to calculate minutes of length from milliseconds
 spotify_songs <- mutate(spotify_songs, minutes = duration_ms/60000)
 write.csv(spotify_songs, "modified_spotify.csv", row.names = FALSE)
 ```
 
 | variable        | class     | range             | description                                                                                                                                                                                                                                                                                                                                                                                                                   |
-|:-----------------|:-----------------|:-----------------|:-----------------|
+|:------|:------|:------|:--------------------------------------------------|
 | classicalness   | double    | 0-1               | an average of acousticness, instrumentalness, and 1-speechiness approximating the amount the song could be described as classical, higher scores imply more classical                                                                                                                                                                                                                                                         |
 | title.words     | double    | 1-26              | the number of words in the song title                                                                                                                                                                                                                                                                                                                                                                                         |
 | norm.loudness   | double    | 0-1               | a min-max normalized spotify_songs\$loudness                                                                                                                                                                                                                                                                                                                                                                                  |
